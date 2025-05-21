@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Github, Mail, PhoneCall } from 'lucide-react';
+import { Github, Mail, PhoneCall, Linkedin } from 'lucide-react';
 
 const Footer: React.FC = () => {
   return (
@@ -25,6 +25,10 @@ const Footer: React.FC = () => {
             <a href="https://github.com/ramsiddesh" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground transition-colors">
               <span className="sr-only">GitHub</span>
               <Github className="h-5 w-5" />
+            </a>
+            <a href="https://www.linkedin.com/in/ram-siddesh-m-9965942a2/" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground transition-colors">
+              <span className="sr-only">LinkedIn</span>
+              <Linkedin className="h-5 w-5" />
             </a>
           </div>
         </div>
