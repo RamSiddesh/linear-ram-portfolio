@@ -1,8 +1,7 @@
-
 import React from 'react';
 import { 
   Code, Database, BookOpen, FileText, 
-  BarChart, Github, Python, FileJson
+  BarChart, Github, FileJson
 } from 'lucide-react';
 
 interface SkillCardProps {
@@ -54,7 +53,7 @@ const SkillsSection: React.FC = () => {
     {
       title: 'Python/C Program',
       level: 'Advanced' as const,
-      icon: <Python className="w-5 h-5" />,
+      icon: <Code className="w-5 h-5" />,
       description: 'Extensive experience in algorithm development, data structures, and application programming',
       gradient: 'primary' as const
     },
