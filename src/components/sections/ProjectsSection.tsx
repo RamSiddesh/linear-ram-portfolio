@@ -57,7 +57,9 @@ const ProjectsSection: React.FC = () => {
                     View Source
                   </a>
                   <a 
-                    href="#" 
+                    href="https://ramsiddesh.github.io/cgpa-calculator/" 
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="inline-flex items-center text-sm text-muted-foreground hover:text-accent transition-colors"
                   >
                     <ExternalLink className="w-4 h-4 mr-1" />

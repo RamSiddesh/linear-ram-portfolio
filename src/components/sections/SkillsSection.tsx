@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { 
   Code, Database, BookOpen, FileText, 
@@ -39,7 +40,7 @@ const SkillCard: React.FC<SkillCardProps> = ({ title, level, icon, description, 
           </span>
         </div>
         <div className="w-full bg-secondary h-1.5 rounded-full">
-          <div className={`bg-gradient-${gradient} h-1.5 rounded-full ${getLevelWidth()}`}></div>
+          <div className={`bg-gradient-to-r ${gradient === 'primary' ? 'from-[#5E5AFF] to-[#BB5CFF]' : gradient === 'secondary' ? 'from-[#0CFFE1] to-[#09A6D6]' : 'from-[#FF9900] to-[#FF3333]'} h-1.5 rounded-full ${getLevelWidth()}`}></div>
         </div>
       </div>
       

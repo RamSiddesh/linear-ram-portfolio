@@ -59,7 +59,12 @@ const EducationSection: React.FC = () => {
         </div>
         
         <div className="mt-12 max-w-md mx-auto border border-gradient-secondary rounded-lg p-6 bg-card">
-          <div className="flex">
+          <a 
+            href="https://internalapp.nptel.ac.in/noc/Ecertificate/?q=NPTEL25CS60S14330042301352804" 
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex hover:opacity-90 transition-opacity"
+          >
             <div className="w-12 h-12 rounded-full bg-gradient-secondary/10 flex items-center justify-center mr-4">
               <Award className="w-6 h-6 text-gradient-secondary" />
             </div>
@@ -68,7 +73,7 @@ const EducationSection: React.FC = () => {
               <h3 className="text-lg font-medium mb-2">Certification</h3>
               <p className="text-muted-foreground">Python for Data Science (NPTEL)</p>
             </div>
-          </div>
+          </a>
         </div>
       </div>
     </section>

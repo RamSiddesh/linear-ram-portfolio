@@ -31,6 +31,7 @@ const Achievement: React.FC<AchievementProps> = ({ year, title, description, ico
 };
 
 const AchievementsSection: React.FC = () => {
+  // Sorting achievements from most recent to oldest
   const achievements = [
     {
       year: '2025',
@@ -68,7 +69,7 @@ const AchievementsSection: React.FC = () => {
       description: 'Led team to second place in the district championship, demonstrating teamwork and leadership skills.',
       icon: <Award className="w-5 h-5" />,
     },
-  ];
+  ].sort((a, b) => parseInt(b.year) - parseInt(a.year)); // Sort by year in descending order
   
   return (
     <section id="achievements" className="py-20 bg-gradient-to-b from-card/30 to-background">
