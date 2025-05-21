@@ -1,73 +1,59 @@
-# Welcome to your Lovable project
-
-## Project info
-
-**URL**: https://lovable.dev/projects/53294b25-bbbd-4be2-98b6-05b8074ce5ba
-
-## How can I edit this code?
-
-There are several ways of editing your application.
-
-**Use Lovable**
-
-Simply visit the [Lovable Project](https://lovable.dev/projects/53294b25-bbbd-4be2-98b6-05b8074ce5ba) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
-
 **Edit a file directly in GitHub**
 
 - Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
 
-**Use GitHub Codespaces**
+## Contact Form Setup (Formspree)
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+This project uses Formspree to handle contact form submissions. To make it work, you need to:
 
-## What technologies are used for this project?
+1.  **Create a Formspree account** if you don't have one: [https://formspree.io/](https://formspree.io/)
+2.  **Create a new form** in Formspree and get your form endpoint URL. It will look something like `https://formspree.io/f/YOUR_UNIQUE_ID`.
+3.  **Update the `ContactSection.tsx` file**:
+    *   Open `src/components/sections/ContactSection.tsx`.
+    *   The Formspree endpoint URL (e.g., `https://formspree.io/f/YOUR_UNIQUE_ID`) is used directly within the `fetch` call inside the `onSubmit` function.
+    *   Ensure this URL is updated to your specific Formspree endpoint if it changes. The current implementation uses the URL provided during setup.
+4.  **Configure your Formspree form settings** to send emails to `ramsid4407@gmail.com` and customize the subject line if needed (though the code sets it to "Portfolio Contact: [Sender's Name]").
 
-This project is built with:
+## Deployment to GitHub Pages
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+This project is configured for deployment to GitHub Pages.
 
-## How can I deploy this project?
+**Prerequisites:**
 
-Simply open [Lovable](https://lovable.dev/projects/53294b25-bbbd-4be2-98b6-05b8074ce5ba) and click on Share -> Publish.
+*   Ensure your repository is on GitHub.
+*   You have `npm` and `git` installed.
 
-## Can I connect a custom domain to my Lovable project?
+**Deployment Steps:**
 
-Yes, you can!
+1.  **Install dependencies** (if you haven't already):
+    ```sh
+    npm install
+    ```
+2.  **Build and deploy the project**:
+    ```sh
+    npm run deploy
+    ```
+    This command will first build your project into the `dist` folder (`npm run predeploy` script) and then push the contents of the `dist` folder to the `gh-pages` branch of your repository (`npm run deploy` script).
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+3.  **Configure GitHub Pages in your repository settings**:
+    *   Go to your GitHub repository.
+    *   Click on "Settings".
+    *   Navigate to the "Pages" section in the left sidebar.
+    *   Under "Build and deployment", for "Source", select "Deploy from a branch".
+    *   For "Branch", select `gh-pages` and the `/ (root)` folder.
+    *   Click "Save".
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+Your site should be live at `https://<YOUR_USERNAME>.github.io/<YOUR_REPOSITORY_NAME>/` (e.g., `https://ramsiddesh.github.io/linear-ram-portfolio/`) after a few minutes.
+
+**Custom Domain:**
+
+If you plan to use a custom domain later:
+
+1.  Configure your custom domain in the GitHub Pages settings.
+2.  Add a `CNAME` file to your `public` directory with your custom domain (e.g., `yourdomain.com`). Vite will automatically include files from the `public` directory in the build output.
+
+## Additional Optimizations Implemented
+
+*   **Contact Form:** Integrated with validation, loading/success/error states, and a honeypot for spam prevention.
+*   **GitHub Pages Deployment:** Configured `vite.config.ts` and `package.json` for easy deployment.
+*   **SEO Meta Tags:** Basic SEO meta tags are present in `index.html`. You can customize `og:image` and `twitter:image` further.

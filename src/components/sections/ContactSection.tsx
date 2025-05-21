@@ -1,23 +1,60 @@
 
 import React, { useState } from 'react';
-import { Mail, PhoneCall, Github, Copy, Check } from 'lucide-react';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import { Mail, PhoneCall, Github, Copy, Check, Loader2 } from 'lucide-react';
+
+type FormInputs = {
+  name: string;
+  email: string;
+  message: string;
+  _honeypot?: string; // Optional honeypot field
+  _subject?: string; // Optional subject field
+};
 
 const ContactSection: React.FC = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [message, setMessage] = useState('');
-  const [copied, setCopied] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    reset,
+  } = useForm<FormInputs>();
   
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // In a real implementation, this would send the form data
-    console.log({ name, email, message });
-    // Reset form
-    setName('');
-    setEmail('');
-    setMessage('');
-    // Show success message (would use toast in a real implementation)
-    alert('Message sent! Thank you for reaching out.');
+  const [submissionStatus, setSubmissionStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [copied, setCopied] = useState(false);
+
+  const onSubmit: SubmitHandler<FormInputs> = async (data) => {
+    setSubmissionStatus('idle'); // Reset status on new submission
+
+    try {
+      const updatedData = {
+        ...data,
+        _subject: `Portfolio Contact: ${data.name}`, // Dynamic subject based on sender's name
+      };
+      const response = await fetch('https://formspree.io/f/xdkgvnag', { // The new Formspree endpoint
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json', // Recommended by Formspree for AJAX submissions
+        },
+        body: JSON.stringify(updatedData),
+      });
+
+      if (response.ok) {
+        // Formspree usually returns a 200 OK. 
+        // More robust error handling could check response.json() for { "ok": true } or specific error messages.
+        setSubmissionStatus('success');
+        reset(); // Reset form fields after successful submission
+      } else {
+        // Handle non-OK responses (e.g., 4xx, 5xx errors)
+        const errorData = await response.json().catch(() => ({})); // Try to parse error JSON, default to empty object
+        console.error('Formspree submission failed:', response.status, errorData.errors || 'Unknown error');
+        setSubmissionStatus('error');
+      }
+    } catch (error) {
+      // Handle network errors or other issues with the fetch call
+      console.error('Submission error:', error);
+      setSubmissionStatus('error');
+    }
   };
   
   const copyToClipboard = (text: string) => {
@@ -36,17 +73,21 @@ const ContactSection: React.FC = () => {
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
           <div>
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+              {/* Honeypot field (hidden) */}
+              <input type="text" {...register('_honeypot')} style={{ display: 'none' }} />
+              <input type="hidden" {...register('_subject')} defaultValue="Portfolio Contact: New Message" />
+
               <div>
                 <label htmlFor="name" className="block text-sm font-medium mb-1">Name</label>
                 <input
                   id="name"
                   type="text"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  className="w-full px-4 py-2 bg-card border border-border rounded-md focus:outline-none focus:ring-1 focus:ring-accent"
-                  required
+                  {...register('name', { required: 'Name is required' })}
+                  className={`w-full px-4 py-2 bg-card border rounded-md focus:outline-none focus:ring-1 ${errors.name ? 'border-red-500 focus:ring-red-500' : 'border-border focus:ring-accent'}`}
+                  aria-invalid={errors.name ? "true" : "false"}
                 />
+                {errors.name && <p className="mt-1 text-xs text-red-500">{errors.name.message}</p>}
               </div>
               
               <div>
@@ -54,31 +95,48 @@ const ContactSection: React.FC = () => {
                 <input
                   id="email"
                   type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full px-4 py-2 bg-card border border-border rounded-md focus:outline-none focus:ring-1 focus:ring-accent"
-                  required
+                  {...register('email', {
+                    required: 'Email is required',
+                    pattern: {
+                      value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                      message: 'Invalid email address'
+                    }
+                  })}
+                  className={`w-full px-4 py-2 bg-card border rounded-md focus:outline-none focus:ring-1 ${errors.email ? 'border-red-500 focus:ring-red-500' : 'border-border focus:ring-accent'}`}
+                  aria-invalid={errors.email ? "true" : "false"}
                 />
+                {errors.email && <p className="mt-1 text-xs text-red-500">{errors.email.message}</p>}
               </div>
               
               <div>
                 <label htmlFor="message" className="block text-sm font-medium mb-1">Message</label>
                 <textarea
                   id="message"
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value)}
+                  {...register('message', { required: 'Message is required' })}
                   rows={5}
-                  className="w-full px-4 py-2 bg-card border border-border rounded-md focus:outline-none focus:ring-1 focus:ring-accent"
-                  required
+                  className={`w-full px-4 py-2 bg-card border rounded-md focus:outline-none focus:ring-1 ${errors.message ? 'border-red-500 focus:ring-red-500' : 'border-border focus:ring-accent'}`}
+                  aria-invalid={errors.message ? "true" : "false"}
                 />
+                {errors.message && <p className="mt-1 text-xs text-red-500">{errors.message.message}</p>}
               </div>
               
               <button
                 type="submit"
-                className="w-full px-4 py-2.5 text-white rounded-md bg-gradient-primary hover:opacity-90 transition-opacity"
+                disabled={isSubmitting || submissionStatus === 'success'}
+                className="w-full px-4 py-2.5 text-white rounded-md bg-gradient-primary hover:opacity-90 transition-opacity flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Send Message
+                {isSubmitting ? (
+                  <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Sending...</>
+                ) : (
+                  'Send Message'
+                )}
               </button>
+              {submissionStatus === 'success' && (
+                <p className="mt-2 text-sm text-green-500">Message sent successfully! Thank you for reaching out.</p>
+              )}
+              {submissionStatus === 'error' && (
+                <p className="mt-2 text-sm text-red-500">Failed to send message. Please try again later or contact me directly via email.</p>
+              )}
             </form>
           </div>
           
@@ -114,6 +172,7 @@ const ContactSection: React.FC = () => {
                         <button 
                           onClick={() => copyToClipboard('7550292066')}
                           className="text-muted-foreground hover:text-foreground"
+                          aria-label="Copy phone number"
                         >
                           {copied ? <Check className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4" />}
                         </button>
