@@ -11,6 +11,13 @@ This is a personal portfolio website built with React, TypeScript, and Vite, des
 *   **SEO Optimized:** Basic SEO meta tags included for better search engine visibility.
 *   **Dark Mode (Conceptual):** While not fully implemented, the design considers a potential dark mode.
 
+
+
+## ✨ My Portfolio 
+   https://ramsiddesh.github.io/linear-ram-portfolio/
+
+
+
 ## 🛠️ Technologies Used
 
 *   **Frontend:**
