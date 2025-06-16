@@ -1,4 +1,4 @@
-# Linear Ram Portfolio
+# Ram Siddesh Portfolio (my personal website using AI)
 
 This is a personal portfolio website built with React, TypeScript, and Vite, designed to showcase projects and skills. It features a clean, modern design inspired by Linear's aesthetic.
 
