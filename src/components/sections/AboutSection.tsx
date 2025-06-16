@@ -21,7 +21,6 @@ const AboutSection: React.FC = () => {
         '    }',
         '',
         'me = introduce_myself()',
-        '# Ready to collaborate on challenging projects!'
       ];
       
       const codeContainer = terminalRef.current.querySelector('.terminal-code') as HTMLElement;
