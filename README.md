@@ -14,7 +14,7 @@ This is a personal portfolio website built with React, TypeScript, and Vite, des
 
 
 ## ✨ My Portfolio 
-   https://ramsiddesh.github.io/linear-ram-portfolio/
+ https://ramsiddesh.github.io/ramsiddesh_portfolio/
 
 
 
